@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<datos>
+    <usuarios>
+        <usuario>
+            <id>admin</id>
+            <clave>admin</clave>
+            <rol>ADMINISTRADOR</rol>
+        </usuario>
+        <usuario>
+            <id>100</id>
+            <clave>100</clave>
+            <rol>FUNCIONARIO</rol>
+        </usuario>
+    </usuarios>
+    <funcionarios>
+        <funcionario>
+            <id>100</id>
+            <nombre>Ana Perez</nombre>
+            <telefono>8888-1111</telefono>
+        </funcionario>
+    </funcionarios>
+    <categorias>
+        <categoria>
+            <id>1</id>
+            <descripcion>Sala para 10 personas</descripcion>
+        </categoria>
+        <categoria>
+            <id>2</id>
+            <descripcion>Laptop windows 11</descripcion>
+        </categoria>
+        <categoria>
+            <id>3</id>
+            <descripcion>Proyector</descripcion>
+        </categoria>
+    </categorias>
+    <recursos>
+        <recurso>
+            <id>SALA-1</id>
+            <descripcion>Sala 1 primer piso</descripcion>
+            <categoria>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoria>
+        </recurso>
+        <recurso>
+            <id>SALA-2</id>
+            <descripcion>Sala 2 segundo piso</descripcion>
+            <categoria>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoria>
+        </recurso>
+        <recurso>
+            <id>LT-238715</id>
+            <descripcion>Laptop #238715</descripcion>
+            <categoria>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoria>
+        </recurso>
+        <recurso>
+            <id>LT-238716</id>
+            <descripcion>Laptop #238716</descripcion>
+            <categoria>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoria>
+        </recurso>
+        <recurso>
+            <id>PR-01</id>
+            <descripcion>Proyector sala magna</descripcion>
+            <categoria>
+                <id>3</id>
+                <descripcion>Proyector</descripcion>
+            </categoria>
+        </recurso>
+    </recursos>
+    <reservas/>
+</datos>

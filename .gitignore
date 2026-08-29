@@ -1,0 +1,6 @@
+target/
+.idea/
+*.iml
+*.log
+out/
+data/datos.xml.bak
