@@ -8,7 +8,7 @@
         </usuario>
         <usuario>
             <id>100</id>
-            <clave>100</clave>
+            <clave>123</clave>
             <rol>FUNCIONARIO</rol>
         </usuario>
     </usuarios>
@@ -75,5 +75,231 @@
             </categoria>
         </recurso>
     </recursos>
-    <reservas/>
+    <reservas>
+        <reserva>
+            <id>RES-1-1788070850019</id>
+            <actividad>Reunion de prueba</actividad>
+            <fecha>2026-09-19</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-2-1788070850065</id>
+            <actividad>Reunion estadisticas recursos</actividad>
+            <fecha>2026-09-24</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-3-1788070850075</id>
+            <actividad>Reunion estadisticas actividades</actividad>
+            <fecha>2026-09-25</fecha>
+            <horaInicio>11:00</horaInicio>
+            <horaFin>12:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>LT-238715</id>
+                <descripcion>Laptop #238715</descripcion>
+                <categoria>
+                    <id>2</id>
+                    <descripcion>Laptop windows 11</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-4-1788070850126</id>
+            <actividad>Reunion recurso reservado</actividad>
+            <fecha>2026-09-21</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>REC-TEST-3</id>
+                <descripcion>Unico recurso de la categoria</descripcion>
+                <categoria>
+                    <id>4</id>
+                    <descripcion>Categoria recurso reservado</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>4</id>
+                <descripcion>Categoria recurso reservado</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-5-1788132202528</id>
+            <actividad>Reunion de prueba</actividad>
+            <fecha>2026-09-19</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-6-1788150838643</id>
+            <actividad>Reunion de prueba</actividad>
+            <fecha>2026-09-19</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-7-1788150838695</id>
+            <actividad>Reunion estadisticas recursos</actividad>
+            <fecha>2026-09-24</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-8-1788150838709</id>
+            <actividad>Reunion estadisticas actividades</actividad>
+            <fecha>2026-09-25</fecha>
+            <horaInicio>11:00</horaInicio>
+            <horaFin>12:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>LT-238715</id>
+                <descripcion>Laptop #238715</descripcion>
+                <categoria>
+                    <id>2</id>
+                    <descripcion>Laptop windows 11</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-9-1788150838763</id>
+            <actividad>Reunion recurso reservado</actividad>
+            <fecha>2026-09-21</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>REC-TEST-3</id>
+                <descripcion>Unico recurso de la categoria</descripcion>
+                <categoria>
+                    <id>4</id>
+                    <descripcion>Categoria recurso reservado</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>4</id>
+                <descripcion>Categoria recurso reservado</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+    </reservas>
 </datos>

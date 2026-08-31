@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="cr.ac.una.reservas.presentation.view.EstadisticasView">
-  <grid id="root" binding="this" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="5be91" binding="rootPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="8" left="8" bottom="8" right="8"/>
     <constraints>
       <xy x="20" y="20" width="1100" height="650"/>
@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="izq" binding="panelRecursos" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="812d1" binding="panelRecursos" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -16,7 +16,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="norteR" binding="panelFiltroRecursos" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="14245" binding="panelFiltroRecursos" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -24,7 +24,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="lt1" class="javax.swing.JLabel">
+              <component id="b24b1" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -32,7 +32,7 @@
                   <text value="Recursos reservados"/>
                 </properties>
               </component>
-              <component id="ld1" class="javax.swing.JLabel">
+              <component id="083dc" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -40,13 +40,13 @@
                   <text value="Desde:"/>
                 </properties>
               </component>
-              <component id="tdr" class="javax.swing.JTextField" binding="txtDesdeRecursos">
+              <component id="4c970" class="javax.swing.JTextField" binding="txtDesdeRecursos">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="lh1" class="javax.swing.JLabel">
+              <component id="bc986" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -54,13 +54,13 @@
                   <text value="Hasta:"/>
                 </properties>
               </component>
-              <component id="thr" class="javax.swing.JTextField" binding="txtHastaRecursos">
+              <component id="d6a52" class="javax.swing.JTextField" binding="txtHastaRecursos">
                 <constraints>
                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="br" class="javax.swing.JButton" binding="btnRecursos">
+              <component id="bacdc" class="javax.swing.JButton" binding="btnRecursos">
                 <constraints>
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -70,7 +70,7 @@
               </component>
             </children>
           </grid>
-          <grid id="centroR" binding="panelCentroRecursos" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="9bbc9" binding="panelCentroRecursos" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -78,20 +78,20 @@
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="spR">
+              <scrollpane id="db958">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="tr" class="javax.swing.JTable" binding="tablaRecursos" custom-create="true">
+                  <component id="d89c1" class="javax.swing.JTable" binding="tablaRecursos" custom-create="true">
                     <constraints/>
                     <properties/>
                   </component>
                 </children>
               </scrollpane>
-              <grid id="gr" binding="panelGraficoRecursos" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="dc0f2" binding="panelGraficoRecursos" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -104,7 +104,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="der" binding="panelActividades" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="abbb4" binding="panelActividades" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -112,7 +112,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="norteA" binding="panelFiltroActividades" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="cec01" binding="panelFiltroActividades" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -120,7 +120,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="lt2" class="javax.swing.JLabel">
+              <component id="05802" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -128,7 +128,7 @@
                   <text value="Actividades calendarizadas"/>
                 </properties>
               </component>
-              <component id="ld2" class="javax.swing.JLabel">
+              <component id="abcc5" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -136,13 +136,13 @@
                   <text value="Desde:"/>
                 </properties>
               </component>
-              <component id="tda" class="javax.swing.JTextField" binding="txtDesdeActividades">
+              <component id="153eb" class="javax.swing.JTextField" binding="txtDesdeActividades">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="lh2" class="javax.swing.JLabel">
+              <component id="58640" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -150,13 +150,13 @@
                   <text value="Hasta:"/>
                 </properties>
               </component>
-              <component id="tha" class="javax.swing.JTextField" binding="txtHastaActividades">
+              <component id="00a79" class="javax.swing.JTextField" binding="txtHastaActividades">
                 <constraints>
                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
-              <component id="ba" class="javax.swing.JButton" binding="btnActividades">
+              <component id="7bdff" class="javax.swing.JButton" binding="btnActividades">
                 <constraints>
                   <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -166,7 +166,7 @@
               </component>
             </children>
           </grid>
-          <grid id="centroA" binding="panelCentroActividades" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="d2cc4" binding="panelCentroActividades" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -174,20 +174,20 @@
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="spA">
+              <scrollpane id="589b3">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ta" class="javax.swing.JTable" binding="tablaActividades" custom-create="true">
+                  <component id="7b707" class="javax.swing.JTable" binding="tablaActividades" custom-create="true">
                     <constraints/>
                     <properties/>
                   </component>
                 </children>
               </scrollpane>
-              <grid id="ga" binding="panelGraficoActividades" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="27169" binding="panelGraficoActividades" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -198,7 +198,7 @@
               </grid>
             </children>
           </grid>
-          <grid id="surA" binding="panelPdf" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="5e68a" binding="panelPdf" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -206,7 +206,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="bp" class="javax.swing.JButton" binding="btnPdf">
+              <component id="cb30a" class="javax.swing.JButton" binding="btnPdf">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
