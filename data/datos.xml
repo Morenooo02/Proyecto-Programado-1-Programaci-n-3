@@ -301,5 +301,105 @@
                 <descripcion>Categoria recurso reservado</descripcion>
             </categoriasSolicitadas>
         </reserva>
+        <reserva>
+            <id>RES-10-1788223647618</id>
+            <actividad>Reunion de prueba</actividad>
+            <fecha>2026-09-20</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-11-1788223647667</id>
+            <actividad>Reunion estadisticas recursos</actividad>
+            <fecha>2026-09-25</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-12-1788223647681</id>
+            <actividad>Reunion estadisticas actividades</actividad>
+            <fecha>2026-09-26</fecha>
+            <horaInicio>11:00</horaInicio>
+            <horaFin>12:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>LT-238715</id>
+                <descripcion>Laptop #238715</descripcion>
+                <categoria>
+                    <id>2</id>
+                    <descripcion>Laptop windows 11</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-13-1788223647728</id>
+            <actividad>Reunion recurso reservado</actividad>
+            <fecha>2026-09-22</fecha>
+            <horaInicio>09:00</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>REC-TEST-3</id>
+                <descripcion>Unico recurso de la categoria</descripcion>
+                <categoria>
+                    <id>4</id>
+                    <descripcion>Categoria recurso reservado</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>4</id>
+                <descripcion>Categoria recurso reservado</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
     </reservas>
 </datos>

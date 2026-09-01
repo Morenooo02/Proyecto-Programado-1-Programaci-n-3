@@ -58,7 +58,9 @@ public class MainFrame extends JFrame {
             tabs.addTab("Reservas", reservasView);
         }
         if (rol == Rol.ADMINISTRADOR) {
-            tabs.addTab("Funcionarios", funcionariosView);
+            ImageIcon iconFuncionarios = new ImageIcon(getClass().getResource("/images/funcionario.png"));
+            Image imagenFuncionarios = iconFuncionarios.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+            tabs.addTab("Funcionarios", new ImageIcon(imagenFuncionarios), funcionariosView);
             tabs.addTab("Categorias", categoriasView);
             tabs.addTab("Recursos", recursosView);
         }
