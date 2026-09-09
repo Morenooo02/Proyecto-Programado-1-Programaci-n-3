@@ -30,6 +30,7 @@ import java.awt.Insets;
 import java.util.List;
 import java.util.Locale;
 
+
 @SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal"})
 public class FuncionarioController extends JPanel {
     public JPanel rootPanel;

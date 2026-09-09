@@ -4,12 +4,17 @@ import cr.ac.una.reservas.presentation.controller.LoginController;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import com.formdev.flatlaf.FlatLightLaf;
+
 
 public class Application {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                FlatLightLaf.setup();
+                UIManager.put("Button.arc", 12);
+                UIManager.put("Component.arc", 12);
+                UIManager.put("TextComponent.arc", 12);
             } catch (Exception ignored) {
             }
             new LoginController().setVisible(true);

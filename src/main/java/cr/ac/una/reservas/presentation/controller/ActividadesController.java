@@ -1,54 +1,81 @@
 package cr.ac.una.reservas.presentation.controller;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.logic.ServiceModel;
 import cr.ac.una.reservas.presentation.view.VistaUtil;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
+import java.net.URL;
 import java.time.LocalDate;
+import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal"})
 public class ActividadesController extends JPanel {
     public JPanel rootPanel;
     public JPanel panelNorte;
-    public JTextField txtSemana;
     public JTable tabla;
     private DefaultTableModel modelo;
     public JButton btnCargar;
     public JButton btnPdf;
+    private DatePicker dateFecha;
     private ServiceModel service;
 
     public ActividadesController() {
         $$$setupUI$$$();
+        configurarIconos();
         service = ServiceModel.getInstance();
         setLayout(new BorderLayout());
         add(rootPanel, BorderLayout.CENTER);
         btnCargar.addActionListener(e -> cargar());
         btnPdf.addActionListener(e -> generarPdf());
     }
+    private void configurarIconos() {
+        btnCargar.setIcon(cargarIcono("/images/check.png", 24, 24));
+        btnPdf.setIcon(cargarIcono("/images/pdf.png", 24, 24));
+    }
+
+    private ImageIcon cargarIcono(String ruta, int ancho, int alto) {
+        URL url = getClass().getResource(ruta);
+
+        if (url == null) {
+            System.err.println("NO SE ENCONTRO: " + ruta);
+            return null;
+        }
+
+        ImageIcon original = new ImageIcon(url);
+        Image imagen = original.getImage().getScaledInstance(
+                ancho, alto, Image.SCALE_SMOOTH
+        );
+
+        return new ImageIcon(imagen);
+    }
 
     private void cargar() {
         try {
-            Object[][] matriz = service.obtenerMatrizActividades(LocalDate.parse(txtSemana.getText().trim()));
+            LocalDate fecha = dateFecha.getDate();
+
+            if (fecha == null) {
+                VistaUtil.error(this, "Debe seleccionar una fecha.");
+                return;
+            }
+
+            Object[][] matriz = service.obtenerMatrizActividades(fecha);
+
             modelo.setRowCount(0);
+
             if (matriz != null) {
                 for (Object[] fila : matriz) {
                     modelo.addRow(fila);
                 }
             }
+
         } catch (Exception ex) {
-            VistaUtil.error(this, "Fecha invalida.");
+            VistaUtil.error(this, "No se pudieron cargar las actividades.");
         }
     }
 
@@ -64,8 +91,46 @@ public class ActividadesController extends JPanel {
 
     private void createUIComponents() {
         modelo = new DefaultTableModel(
-                new Object[]{"Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"}, 0);
+                new Object[]{"Hora", "Lunes", "Martes", "Miercoles",
+                        "Jueves", "Viernes", "Sabado", "Domingo"}, 0);
+
         tabla = new JTable(modelo);
+
+        tabla.setRowHeight(30);
+
+        tabla.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        tabla.getTableHeader().setFont(new Font("Arial", Font.PLAIN, 12));
+        tabla.getTableHeader().setPreferredSize(new Dimension(0, 24));
+
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tabla.getTableHeader().setDefaultRenderer(headerRenderer);
+
+        tabla.setShowGrid(true);
+        tabla.setGridColor(Color.LIGHT_GRAY);
+        tabla.setIntercellSpacing(new Dimension(1, 1));
+
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tabla.getColumnModel().getColumn(0).setMaxWidth(80);
+
+        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+                Component componente = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (isSelected) {
+                    componente.setBackground(table.getSelectionBackground());
+                } else if (column > 0 && value != null && !value.toString().isBlank()) {
+                    componente.setBackground(new Color(255, 254, 200));
+                } else {
+                    componente.setBackground(Color.WHITE);
+                }
+
+                return componente;
+            }
+        });
     }
 
 
@@ -83,19 +148,21 @@ public class ActividadesController extends JPanel {
         panelNorte = new JPanel();
         panelNorte.setLayout(new GridLayoutManager(1, 4, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panelNorte, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panelNorte.setBorder(BorderFactory.createTitledBorder(null, "Semana", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
-        label1.setText("Fecha de la semana (yyyy-MM-dd):");
+        label1.setText("Fecha de referencia");
         panelNorte.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txtSemana = new JTextField();
-        panelNorte.add(txtSemana, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(120, -1), null, 0, false));
         btnCargar = new JButton();
-        btnCargar.setText("Mostrar semana");
+        btnCargar.setText("Cargar");
         panelNorte.add(btnCargar, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         btnPdf = new JButton();
-        btnPdf.setText("PDF");
+        btnPdf.setText("Imprimir");
         panelNorte.add(btnPdf, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        dateFecha = new DatePicker();
+        panelNorte.add(dateFecha, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         rootPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane1.setBorder(BorderFactory.createTitledBorder(null, "Actividades Semanales", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scrollPane1.setViewportView(tabla);
     }
 

@@ -9,20 +9,21 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Insets;
+import javax.swing.text.StyleContext;
+import java.awt.*;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import com.github.lgooddatepicker.components.DatePicker;
+import org.jfree.chart.renderer.category.BarRenderer;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal"})
 public class EstadisticasController extends JPanel {
@@ -33,11 +34,6 @@ public class EstadisticasController extends JPanel {
     public JPanel panelFiltroActividades;
     public JPanel panelCentroRecursos;
     public JPanel panelCentroActividades;
-    public JPanel panelPdf;
-    public JTextField txtDesdeRecursos;
-    public JTextField txtHastaRecursos;
-    public JTextField txtDesdeActividades;
-    public JTextField txtHastaActividades;
     private DefaultTableModel modeloRecursos;
     private DefaultTableModel modeloActividades;
     public JTable tablaRecursos;
@@ -47,6 +43,10 @@ public class EstadisticasController extends JPanel {
     public JButton btnRecursos;
     public JButton btnActividades;
     public JButton btnPdf;
+    private DatePicker dateDesdeRecursos;
+    private DatePicker dateHastaRecursos;
+    private DatePicker dateDesdeActividades;
+    private DatePicker dateHastaActividades;
     private ServiceModel service;
 
     public EstadisticasController() {
@@ -54,57 +54,57 @@ public class EstadisticasController extends JPanel {
         service = ServiceModel.getInstance();
         setLayout(new BorderLayout());
         add(rootPanel, BorderLayout.CENTER);
+        configurarIconos();
         btnRecursos.addActionListener(e -> cargarRecursos());
         btnActividades.addActionListener(e -> cargarActividades());
-        btnPdf.addActionListener(e -> generarPdf());
     }
 
     private void cargarRecursos() {
         try {
-            LocalDate desde = LocalDate.parse(txtDesdeRecursos.getText().trim());
-            LocalDate hasta = LocalDate.parse(txtHastaRecursos.getText().trim());
+            LocalDate desde = dateDesdeRecursos.getDate();
+            LocalDate hasta = dateHastaRecursos.getDate();
+
+            if (desde == null || hasta == null) {
+                VistaUtil.error(this, "Debe seleccionar ambas fechas.");
+                return;
+            }
+
             if (desde.isAfter(hasta)) {
                 VistaUtil.error(this, "El rango de recursos es invalido.");
                 return;
             }
+
             llenarTablaYGrafico(modeloRecursos, panelGraficoRecursos,
-                    service.obtenerEstadisticasRecursos(desde, hasta), "Recursos");
+                    service.obtenerEstadisticasRecursos(desde, hasta), "Recursos Usados");
+
         } catch (Exception ex) {
-            VistaUtil.error(this, "Fechas invalidas.");
+            VistaUtil.error(this, "No se pudieron cargar las estadisticas de recursos.");
         }
     }
 
     private void cargarActividades() {
         try {
-            LocalDate desde = LocalDate.parse(txtDesdeActividades.getText().trim());
-            LocalDate hasta = LocalDate.parse(txtHastaActividades.getText().trim());
-            if (desde.isAfter(hasta)) {
-                VistaUtil.error(this, "El rango de actividades es invalido.");
+            LocalDate desde = dateDesdeActividades.getDate();
+            LocalDate hasta = dateHastaActividades.getDate();
+
+            if (desde == null || hasta == null) {
+                VistaUtil.error(this, "Debe seleccionar ambas fechas.");
                 return;
             }
+
+            if (desde.isAfter(hasta)) {
+                VistaUtil.error(this, "El rango de recursos es invalido.");
+                return;
+            }
+
             llenarTablaYGrafico(modeloActividades, panelGraficoActividades,
-                    service.obtenerEstadisticasActividades(desde, hasta), "Actividades");
+                    service.obtenerEstadisticasActividades(desde, hasta), "Actividades Realizadas");
+
         } catch (Exception ex) {
-            VistaUtil.error(this, "Fechas invalidas.");
+            VistaUtil.error(this, "No se pudieron cargar las estadisticas de actividades.");
         }
     }
 
-    private void generarPdf() {
-        String elegido = VistaUtil.elegirRutaPdf(this, "estadisticas.pdf");
-        if (elegido == null) {
-            return;
-        }
-        List<Object[]> filas = new ArrayList<>();
-        for (int i = 0; i < modeloRecursos.getRowCount(); i++) {
-            filas.add(new Object[]{modeloRecursos.getValueAt(i, 0), modeloRecursos.getValueAt(i, 1)});
-        }
-        for (int i = 0; i < modeloActividades.getRowCount(); i++) {
-            filas.add(new Object[]{modeloActividades.getValueAt(i, 0), modeloActividades.getValueAt(i, 1)});
-        }
-        service.exportarPDF("Estadisticas", new String[]{"Descripcion", "Cantidad"},
-                filas.toArray(new Object[0][0]), elegido);
-        VistaUtil.mensaje(this, "PDF generado.");
-    }
 
     private void llenarTablaYGrafico(DefaultTableModel modelo, JPanel panel, Map<String, Integer> datos, String titulo) {
         modelo.setRowCount(0);
@@ -116,6 +116,8 @@ public class EstadisticasController extends JPanel {
             }
         }
         JFreeChart chart = ChartFactory.createBarChart(titulo, "", "Cantidad", dataset);
+        BarRenderer renderer = (BarRenderer) chart.getCategoryPlot().getRenderer();
+        renderer.setMaximumBarWidth(0.05);
         panel.removeAll();
         panel.add(new ChartPanel(chart), BorderLayout.CENTER);
         panel.revalidate();
@@ -127,6 +129,42 @@ public class EstadisticasController extends JPanel {
         modeloActividades = new DefaultTableModel(new Object[]{"Semana", "Cantidad"}, 0);
         tablaRecursos = new JTable(modeloRecursos);
         tablaActividades = new JTable(modeloActividades);
+    }
+
+    private void estilizarBoton(JButton boton, ImageIcon icono) {
+        if (icono != null) {
+            boton.setIcon(icono);
+            boton.setIconTextGap(7);
+        }
+        boton.setFocusPainted(false);
+        boton.setMargin(new Insets(7, 12, 7, 12));
+    }
+
+    private ImageIcon cargarIcono(String ruta, int ancho, int alto) {
+        URL url = getClass().getResource(ruta);
+
+        if (url == null) {
+            System.err.println("No se encontró la imagen: " + ruta);
+            return null;
+        }
+
+        ImageIcon original = new ImageIcon(url);
+
+        Image imagen = original.getImage().getScaledInstance(
+                ancho,
+                alto,
+                Image.SCALE_SMOOTH
+        );
+
+        return new ImageIcon(imagen);
+    }
+
+    private void configurarIconos(){
+        ImageIcon iconoRecursos = cargarIcono("/images/check.png", 22, 22);
+        ImageIcon iconoActividades = cargarIcono("/images/check.png", 22, 22);
+
+        estilizarBoton(btnRecursos, iconoRecursos);
+        estilizarBoton(btnActividades, iconoActividades);
     }
 
 
@@ -144,71 +182,78 @@ public class EstadisticasController extends JPanel {
         panelRecursos = new JPanel();
         panelRecursos.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panelRecursos, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panelRecursos.setBorder(BorderFactory.createTitledBorder(null, "Recursos", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         panelFiltroRecursos = new JPanel();
-        panelFiltroRecursos.setLayout(new GridLayoutManager(1, 6, new Insets(0, 0, 0, 0), -1, -1));
+        panelFiltroRecursos.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panelFiltroRecursos.setToolTipText("");
         panelRecursos.add(panelFiltroRecursos, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("Recursos reservados");
-        panelFiltroRecursos.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Desde:");
-        panelFiltroRecursos.add(label2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txtDesdeRecursos = new JTextField();
-        panelFiltroRecursos.add(txtDesdeRecursos, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText("Hasta:");
-        panelFiltroRecursos.add(label3, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txtHastaRecursos = new JTextField();
-        panelFiltroRecursos.add(txtHastaRecursos, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panelFiltroRecursos.setBorder(BorderFactory.createTitledBorder(null, "Fechas Desde y Hasta", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, -1, -1, panelFiltroRecursos.getFont()), null));
         btnRecursos = new JButton();
-        btnRecursos.setText("Calcular recursos");
-        panelFiltroRecursos.add(btnRecursos, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btnRecursos.setText("Cargar");
+        panelFiltroRecursos.add(btnRecursos, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        dateHastaRecursos = new DatePicker();
+        panelFiltroRecursos.add(dateHastaRecursos, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        dateDesdeRecursos = new DatePicker();
+        panelFiltroRecursos.add(dateDesdeRecursos, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panelCentroRecursos = new JPanel();
         panelCentroRecursos.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panelRecursos.add(panelCentroRecursos, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         panelCentroRecursos.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane1.setBorder(BorderFactory.createTitledBorder(null, "Estadisticas", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scrollPane1.setViewportView(tablaRecursos);
         panelGraficoRecursos = new JPanel();
         panelGraficoRecursos.setLayout(new BorderLayout(0, 0));
         panelCentroRecursos.add(panelGraficoRecursos, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panelGraficoRecursos.setBorder(BorderFactory.createTitledBorder(null, "Grafico", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         panelActividades = new JPanel();
-        panelActividades.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panelActividades.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootPanel.add(panelActividades, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panelActividades.setBorder(BorderFactory.createTitledBorder(null, "Actividades", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         panelFiltroActividades = new JPanel();
-        panelFiltroActividades.setLayout(new GridLayoutManager(1, 6, new Insets(0, 0, 0, 0), -1, -1));
+        panelFiltroActividades.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         panelActividades.add(panelFiltroActividades, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Actividades calendarizadas");
-        panelFiltroActividades.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label5 = new JLabel();
-        label5.setText("Desde:");
-        panelFiltroActividades.add(label5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txtDesdeActividades = new JTextField();
-        panelFiltroActividades.add(txtDesdeActividades, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label6 = new JLabel();
-        label6.setText("Hasta:");
-        panelFiltroActividades.add(label6, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txtHastaActividades = new JTextField();
-        panelFiltroActividades.add(txtHastaActividades, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panelFiltroActividades.setBorder(BorderFactory.createTitledBorder(null, "Fechas Desde y Hasta", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         btnActividades = new JButton();
-        btnActividades.setText("Calcular actividades");
-        panelFiltroActividades.add(btnActividades, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btnActividades.setText("Cargar");
+        panelFiltroActividades.add(btnActividades, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        dateDesdeActividades = new DatePicker();
+        panelFiltroActividades.add(dateDesdeActividades, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        dateHastaActividades = new DatePicker();
+        panelFiltroActividades.add(dateHastaActividades, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panelCentroActividades = new JPanel();
         panelCentroActividades.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panelActividades.add(panelCentroActividades, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JScrollPane scrollPane2 = new JScrollPane();
         panelCentroActividades.add(scrollPane2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        scrollPane2.setBorder(BorderFactory.createTitledBorder(null, "Estadisticas", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         scrollPane2.setViewportView(tablaActividades);
         panelGraficoActividades = new JPanel();
         panelGraficoActividades.setLayout(new BorderLayout(0, 0));
         panelCentroActividades.add(panelGraficoActividades, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        panelPdf = new JPanel();
-        panelPdf.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        panelActividades.add(panelPdf, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        btnPdf = new JButton();
-        btnPdf.setText("PDF");
-        panelPdf.add(btnPdf, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panelGraficoActividades.setBorder(BorderFactory.createTitledBorder(null, "Grafico", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+        if (currentFont == null) return null;
+        String resultName;
+        if (fontName == null) {
+            resultName = currentFont.getName();
+        } else {
+            Font testFont = new Font(fontName, Font.PLAIN, 10);
+            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+                resultName = fontName;
+            } else {
+                resultName = currentFont.getName();
+            }
+        }
+        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
+        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
+        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
+        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
     /**
