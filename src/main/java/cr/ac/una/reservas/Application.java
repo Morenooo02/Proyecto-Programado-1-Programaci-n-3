@@ -9,14 +9,20 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 public class Application {
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler((thread, error) ->
+                error.printStackTrace(System.err));
+
+        // Evita que FlatLaf cargue su biblioteca nativa de decoraciones en Java 26.
+        System.setProperty("flatlaf.useWindowDecorations", "false");
+
         SwingUtilities.invokeLater(() -> {
             try {
                 FlatLightLaf.setup();
                 UIManager.put("Button.arc", 12);
                 UIManager.put("Component.arc", 12);
                 UIManager.put("TextComponent.arc", 12);
-                // Inicio de la aplicación
-            } catch (Exception ignored) {
+            } catch (RuntimeException exception) {
+                exception.printStackTrace(System.err);
             }
             new LoginController().setVisible(true);
         });

@@ -34,6 +34,7 @@ public class ActividadesController extends JPanel {
         btnCargar.addActionListener(e -> cargar());
         btnPdf.addActionListener(e -> generarPdf());
     }
+
     private void configurarIconos() {
         btnCargar.setIcon(cargarIcono("/images/check.png", 24, 24));
         btnPdf.setIcon(cargarIcono("/images/pdf.png", 24, 24));

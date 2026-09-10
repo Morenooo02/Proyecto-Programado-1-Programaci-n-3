@@ -6,6 +6,7 @@ Proyecto 1 - EIF206 Programacion 3.
 1. File - Open y seleccione esta carpeta (la que tiene `pom.xml`).
 2. Confirme que se abre como proyecto Maven.
 3. Ejecute la clase `cr.ac.una.reservas.Application`.
+La aplicación desactiva las decoraciones nativas de FlatLaf para evitar el aviso de acceso restringido que aparece con Java 26.
 
 ## Como editar las pantallas (GUI Designer)
 IntelliJ exige el `.form` al lado de la clase ligada. Por eso `LoginController.form` vive junto a `LoginController.java` en `presentation/controller/`. En `presentation/view/` queda `VistaUtil`.
