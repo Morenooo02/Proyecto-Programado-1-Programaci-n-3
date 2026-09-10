@@ -15,6 +15,7 @@ public class Application {
                 UIManager.put("Button.arc", 12);
                 UIManager.put("Component.arc", 12);
                 UIManager.put("TextComponent.arc", 12);
+                // Inicio de la aplicación
             } catch (Exception ignored) {
             }
             new LoginController().setVisible(true);
