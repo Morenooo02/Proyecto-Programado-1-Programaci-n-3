@@ -36,4 +36,17 @@ class ReservaRegistroTest {
         r.setFuncionario(service.buscarFuncionario("100"));
         assertFalse(service.registrarReserva(r, List.of("1")));
     }
+
+    @Test
+    void reservaFallaSiLaFechaEsAnteriorAHoy() {
+        ServiceModel service = ServiceModel.getInstance();
+        Reserva r = new Reserva();
+        r.setActividad("Reserva pasada");
+        r.setFecha(LocalDate.now().minusDays(1));
+        r.setHoraInicio(LocalTime.of(11, 0));
+        r.setHoraFin(LocalTime.of(12, 0));
+        r.setFuncionario(service.buscarFuncionario("100"));
+
+        assertFalse(service.registrarReserva(r, List.of("1")));
+    }
 }

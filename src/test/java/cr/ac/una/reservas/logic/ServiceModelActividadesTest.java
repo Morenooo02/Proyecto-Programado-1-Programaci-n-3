@@ -24,7 +24,7 @@ class ServiceModelActividadesTest {
         assertTrue(service.registrarReserva(r, List.of("2")));
 
         Object[][] matriz = service.obtenerMatrizActividades(fecha);
-        int filaOnce = 11 - 7;
+        int filaOnce = 11;
         int columnaDia = fecha.getDayOfWeek().getValue();
 
         assertEquals("Reunion actividades - Ana Perez", matriz[filaOnce][columnaDia]);
@@ -53,7 +53,7 @@ class ServiceModelActividadesTest {
         assertTrue(service.registrarReserva(r2, List.of("3")));
 
         Object[][] matriz = service.obtenerMatrizActividades(fecha);
-        int filaCatorce = 14 - 7;
+        int filaCatorce = 14;
         int columnaDia = fecha.getDayOfWeek().getValue();
         String celda = (String) matriz[filaCatorce][columnaDia];
 
@@ -63,5 +63,26 @@ class ServiceModelActividadesTest {
 
         service.cancelarReserva(r1.getId());
         service.cancelarReserva(r2.getId());
+    }
+
+    @Test
+    void obtenerMatrizActividadesIncluyeReservaNocturna() {
+        ServiceModel service = ServiceModel.getInstance();
+        LocalDate fecha = LocalDate.now().plusDays(45);
+        Reserva r = new Reserva();
+        r.setActividad("Actividad nocturna");
+        r.setFecha(fecha);
+        r.setHoraInicio(LocalTime.of(20, 0));
+        r.setHoraFin(LocalTime.of(21, 0));
+        r.setFuncionario(service.buscarFuncionario("100"));
+        assertTrue(service.registrarReserva(r, List.of("2")));
+
+        Object[][] matriz = service.obtenerMatrizActividades(fecha);
+
+        assertEquals(24, matriz.length);
+        int columnaDia = fecha.getDayOfWeek().getValue();
+        assertEquals("Actividad nocturna - Ana Perez", matriz[20][columnaDia]);
+
+        service.cancelarReserva(r.getId());
     }
 }

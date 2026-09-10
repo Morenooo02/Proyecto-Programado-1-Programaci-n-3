@@ -26,6 +26,8 @@ import dev.langchain4j.service.AiServices;
 import java.util.stream.Collectors;
 
 public class ServiceModel {
+    private static final int HORA_INICIO_MATRIZ = 0;
+    private static final int HORA_FIN_MATRIZ = 23;
     private static ServiceModel instance;
     private DataContainer dataContainer;
     private XmlDataStore xmlStore;
@@ -280,6 +282,7 @@ public class ServiceModel {
     public boolean registrarReserva(Reserva r, List<String> catIds) {
         if (r == null || vacio(r.getActividad()) || r.getFecha() == null
                 || r.getHoraInicio() == null || r.getHoraFin() == null
+                || r.getFecha().isBefore(LocalDate.now())
                 || r.getHoraFin().isBefore(r.getHoraInicio()) || r.getHoraFin().equals(r.getHoraInicio())
                 || catIds == null || catIds.isEmpty() || r.getFuncionario() == null) {
             return false;
@@ -348,15 +351,13 @@ public class ServiceModel {
 
     public Object[][] obtenerMatrizCalendarizacion(LocalDate fecha, String catId) {
         List<Recurso> recursos = buscarRecursosPorCategoria(catId);
-        int horaInicio = 7;
-        int horaFin = 18;
-        int filas = (horaFin - horaInicio) + 1;
+        int filas = (HORA_FIN_MATRIZ - HORA_INICIO_MATRIZ) + 1;
         Object[][] matriz = new Object[filas][recursos.size() + 1];
         for (int i = 0; i < filas; i++) {
-            int hora = horaInicio + i;
+            int hora = HORA_INICIO_MATRIZ + i;
             matriz[i][0] = String.format("%02d:00", hora);
             LocalTime slot = LocalTime.of(hora, 0);
-            LocalTime slotFin = slot.plusHours(1);
+            LocalTime slotFin = hora == HORA_FIN_MATRIZ ? LocalTime.MAX : slot.plusHours(1);
             for (int j = 0; j < recursos.size(); j++) {
                 Recurso rec = recursos.get(j);
                 matriz[i][j + 1] = textoReservaEnSlot(rec, fecha, slot, slotFin);
@@ -371,15 +372,13 @@ public class ServiceModel {
 
     public Object[][] obtenerMatrizActividades(LocalDate semanaRef) {
         LocalDate lunes = semanaRef.with(DayOfWeek.MONDAY);
-        int horaInicio = 7;
-        int horaFin = 18;
-        int filas = (horaFin - horaInicio) + 1;
+        int filas = (HORA_FIN_MATRIZ - HORA_INICIO_MATRIZ) + 1;
         Object[][] matriz = new Object[filas][8];
         for (int i = 0; i < filas; i++) {
-            int hora = horaInicio + i;
+            int hora = HORA_INICIO_MATRIZ + i;
             matriz[i][0] = String.format("%02d:00", hora);
             LocalTime slot = LocalTime.of(hora, 0);
-            LocalTime slotFin = slot.plusHours(1);
+            LocalTime slotFin = hora == HORA_FIN_MATRIZ ? LocalTime.MAX : slot.plusHours(1);
             for (int d = 0; d < 7; d++) {
                 LocalDate dia = lunes.plusDays(d);
                 matriz[i][d + 1] = textoActividadesEnSlot(dia, slot, slotFin);

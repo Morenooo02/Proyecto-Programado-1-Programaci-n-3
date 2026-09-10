@@ -487,5 +487,30 @@
                 <descripcion>Laptop windows 11</descripcion>
             </categoriasSolicitadas>
         </reserva>
+        <reserva>
+            <id>RES-16-1789025359821</id>
+            <actividad>Ruenion Proyecto</actividad>
+            <fecha>2026-09-11</fecha>
+            <horaInicio>07:00</horaInicio>
+            <horaFin>09:30</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
     </reservas>
 </datos>
