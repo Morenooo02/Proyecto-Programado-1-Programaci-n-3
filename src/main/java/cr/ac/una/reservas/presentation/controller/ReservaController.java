@@ -217,6 +217,13 @@ public class ReservaController extends JPanel {
             r.setHoraFin(LocalTime.parse(horaFinTexto));
             r.setFuncionario(service.buscarFuncionario(funcionarioId));
 
+            LocalDate hoy = LocalDate.now();
+            if (r.getFecha().isBefore(hoy)
+                    || (r.getFecha().equals(hoy) && !r.getHoraInicio().isAfter(LocalTime.now()))) {
+                VistaUtil.error(this, "No puede reservar en una fecha u hora que ya pasó.");
+                return;
+            }
+
             if (!service.registrarReserva(r, cats)) {
                 List<String> noDisp = service.categoriasNoDisponibles(r.getFecha(), r.getHoraInicio(), r.getHoraFin(), cats);
                 if (!noDisp.isEmpty()) {

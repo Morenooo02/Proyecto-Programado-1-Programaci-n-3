@@ -280,9 +280,12 @@ public class ServiceModel {
     }
 
     public boolean registrarReserva(Reserva r, List<String> catIds) {
+        LocalDate hoy = LocalDate.now();
+        LocalTime ahora = LocalTime.now();
         if (r == null || vacio(r.getActividad()) || r.getFecha() == null
                 || r.getHoraInicio() == null || r.getHoraFin() == null
-                || r.getFecha().isBefore(LocalDate.now())
+                || r.getFecha().isBefore(hoy)
+                || (r.getFecha().equals(hoy) && !r.getHoraInicio().isAfter(ahora))
                 || r.getHoraFin().isBefore(r.getHoraInicio()) || r.getHoraFin().equals(r.getHoraInicio())
                 || catIds == null || catIds.isEmpty() || r.getFuncionario() == null) {
             return false;
@@ -406,21 +409,59 @@ public class ServiceModel {
 
     public Map<String, Integer> obtenerEstadisticasActividades(LocalDate desde, LocalDate hasta) {
         Map<String, Integer> mapa = new LinkedHashMap<>();
-        WeekFields wf = WeekFields.of(Locale.getDefault());
+        if (desde == null || hasta == null || desde.isAfter(hasta)) {
+            return mapa;
+        }
+        WeekFields wf = WeekFields.ISO;
+
+
+        LocalDate cursor = desde;
+        while (!cursor.isAfter(hasta)) {
+            mapa.putIfAbsent(claveSemana(cursor, wf), 0);
+            cursor = cursor.plusWeeks(1);
+        }
+        mapa.putIfAbsent(claveSemana(hasta, wf), 0); // asegura que la última semana quede incluida
+
+
         for (Reserva r : dataContainer.getReservas()) {
             if (!reservaEnRango(r, desde, hasta) || r.getFecha() == null) {
                 continue;
             }
-            int semana = r.getFecha().get(wf.weekOfWeekBasedYear());
-            int anio = r.getFecha().get(wf.weekBasedYear());
-            String clave = "Semana " + semana + " - " + anio;
+            String clave = claveSemana(r.getFecha(), wf);
             mapa.put(clave, mapa.getOrDefault(clave, 0) + 1);
         }
         return mapa;
     }
 
+    private String claveSemana(LocalDate fecha, WeekFields wf) {
+        int semana = fecha.get(wf.weekOfWeekBasedYear());
+        int anio = fecha.get(wf.weekBasedYear());
+        return "Semana " + semana + " - " + anio;
+    }
+
     public void exportarPDF(String titulo, String[] columnas, Object[][] datos, String ruta) {
         pdfGenerator.generarReportePDF(titulo, columnas, datos, ruta);
+    }
+    public void exportarPdfEstadisticas(Map<String, Integer> recursos, byte[] graficoRecursos,
+                                        Map<String, Integer> actividades, byte[] graficoActividades,
+                                        String ruta) {
+        List<PdfReportGenerator.Seccion> secciones = new ArrayList<>();
+        secciones.add(new PdfReportGenerator.Seccion("Uso por categoria de recurso",
+                new String[]{"Categoria", "Cantidad"}, mapaADatos(recursos), graficoRecursos));
+        secciones.add(new PdfReportGenerator.Seccion("Actividades por semana",
+                new String[]{"Semana", "Cantidad"}, mapaADatos(actividades), graficoActividades));
+        pdfGenerator.generarReporteConSecciones("Estadisticas", secciones, ruta);
+    }
+
+    private Object[][] mapaADatos(Map<String, Integer> mapa) {
+        Object[][] datos = new Object[mapa.size()][2];
+        int i = 0;
+        for (Map.Entry<String, Integer> e : mapa.entrySet()) {
+            datos[i][0] = e.getKey();
+            datos[i][1] = e.getValue();
+            i++;
+        }
+        return datos;
     }
 
     public Funcionario buscarFuncionario(String id) {

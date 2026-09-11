@@ -8,7 +8,7 @@
         </usuario>
         <usuario>
             <id>100</id>
-            <clave>100</clave>
+            <clave>123</clave>
             <rol>FUNCIONARIO</rol>
         </usuario>
     </usuarios>
@@ -510,6 +510,106 @@
             <categoriasSolicitadas>
                 <id>1</id>
                 <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-17-1789107420681</id>
+            <actividad>Reunion Sorpresa Inversionistas</actividad>
+            <fecha>2026-09-11</fecha>
+            <horaInicio>08:30</horaInicio>
+            <horaFin>10:00</horaFin>
+            <estado>CANCELADA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-18-1789107735891</id>
+            <actividad>Reunion</actividad>
+            <fecha>2026-09-11</fecha>
+            <horaInicio>10:30</horaInicio>
+            <horaFin>14:30</horaFin>
+            <estado>ACTIVA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>LT-238715</id>
+                <descripcion>Laptop #238715</descripcion>
+                <categoria>
+                    <id>2</id>
+                    <descripcion>Laptop windows 11</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-19-1789107839510</id>
+            <actividad>Reunion</actividad>
+            <fecha>2026-09-25</fecha>
+            <horaInicio>14:30</horaInicio>
+            <horaFin>15:00</horaFin>
+            <estado>ACTIVA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>SALA-1</id>
+                <descripcion>Sala 1 primer piso</descripcion>
+                <categoria>
+                    <id>1</id>
+                    <descripcion>Sala para 10 personas</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>1</id>
+                <descripcion>Sala para 10 personas</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
+        <reserva>
+            <id>RES-20-1789108133329</id>
+            <actividad>Reunion Gerencia</actividad>
+            <fecha>2026-09-13</fecha>
+            <horaInicio>19:45</horaInicio>
+            <horaFin>22:30</horaFin>
+            <estado>ACTIVA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>PR-01</id>
+                <descripcion>Proyector sala magna</descripcion>
+                <categoria>
+                    <id>3</id>
+                    <descripcion>Proyector</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>3</id>
+                <descripcion>Proyector</descripcion>
             </categoriasSolicitadas>
         </reserva>
     </reservas>

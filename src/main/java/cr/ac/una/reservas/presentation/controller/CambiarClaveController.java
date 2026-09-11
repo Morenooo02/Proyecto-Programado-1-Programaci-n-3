@@ -5,17 +5,15 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import cr.ac.una.reservas.logic.ServiceModel;
 import cr.ac.una.reservas.presentation.view.VistaUtil;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Insets;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings({"unused", "WeakerAccess", "FieldCanBeLocal"})
 public class CambiarClaveController extends JDialog {
@@ -28,6 +26,8 @@ public class CambiarClaveController extends JDialog {
     public JPasswordField txtClaveNueva1;
     public JButton btnCancelar;
     public JLabel lblNueva1;
+    private JButton guardarButton;
+    private JButton cancelarButton;
     private String userId;
 
     public CambiarClaveController(JFrame owner, String userId) {
@@ -37,8 +37,8 @@ public class CambiarClaveController extends JDialog {
         setContentPane(contentPane);
         setSize(420, 200);
         setLocationRelativeTo(owner);
-        btnCancelar.addActionListener(e -> dispose());
-        btnGuardar.addActionListener(e -> guardar());
+        cancelarButton.addActionListener(e -> dispose());
+        guardarButton.addActionListener(e -> guardar());
     }
 
     private void guardar() {
@@ -54,11 +54,30 @@ public class CambiarClaveController extends JDialog {
             return;
         }
         if (ServiceModel.getInstance().cambiarClave(userId, actual, nueva)) {
-            VistaUtil.mensaje(this, "Clave actualizada.");
+            String rutaPdf = generarComprobante();
+            VistaUtil.mensaje(this, "Clave actualizada. Comprobante guardado en:\n" + rutaPdf);
             dispose();
         } else {
             VistaUtil.error(this, "No se pudo cambiar la clave. Verifique la clave actual.");
         }
+    }
+
+    private String generarComprobante() {
+        String carpeta = "reportes";
+        new File(carpeta).mkdirs();
+        String marcaTiempo = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String ruta = carpeta + File.separator + "clave_" + userId + "_" + marcaTiempo + ".pdf";
+
+        String[] columnas = {"Campo", "Valor"};
+        Object[][] datos = {
+                {"Usuario", userId},
+                {"Fecha", LocalDate.now().toString()},
+                {"Hora", LocalTime.now().withNano(0).toString()},
+                {"Accion", "Cambio de clave exitoso"}
+        };
+        ServiceModel.getInstance().exportarPDF("Comprobante de cambio de clave", columnas, datos, ruta);
+        return ruta;
     }
 
     private void createUIComponents() {
@@ -80,28 +99,36 @@ public class CambiarClaveController extends JDialog {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        createUIComponents();
         contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(4, 3, new Insets(15, 15, 15, 15), -1, -1));
+        contentPane.setLayout(new GridLayoutManager(4, 5, new Insets(15, 15, 15, 15), -1, -1));
         lblActual = new JLabel();
         lblActual.setText("Clave Actual:");
         contentPane.add(lblActual, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         txtClaveActual = new JPasswordField();
-        contentPane.add(txtClaveActual, new GridConstraints(0, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(txtClaveActual, new GridConstraints(0, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         lblNueva2 = new JLabel();
         lblNueva2.setText("Clave Nueva:");
         contentPane.add(lblNueva2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         txtClaveNueva2 = new JPasswordField();
-        contentPane.add(txtClaveNueva2, new GridConstraints(2, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        btnGuardar.setText("Guardar");
-        contentPane.add(btnGuardar, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(txtClaveNueva2, new GridConstraints(2, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         txtClaveNueva1 = new JPasswordField();
-        contentPane.add(txtClaveNueva1, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        contentPane.add(txtClaveNueva1, new GridConstraints(1, 1, 1, 4, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         lblNueva1 = new JLabel();
         lblNueva1.setText("Clave Nueva:");
         contentPane.add(lblNueva1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        btnCancelar.setText("Cancelar");
-        contentPane.add(btnCancelar, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.add(panel1, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        guardarButton = new JButton();
+        guardarButton.setText("Guardar");
+        scrollPane1.setViewportView(guardarButton);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        panel1.add(scrollPane2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        cancelarButton = new JButton();
+        cancelarButton.setText("Cancelar");
+        scrollPane2.setViewportView(cancelarButton);
     }
 
     /**

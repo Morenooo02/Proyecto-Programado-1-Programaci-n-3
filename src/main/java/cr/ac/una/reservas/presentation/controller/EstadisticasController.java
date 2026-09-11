@@ -10,12 +10,15 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,8 @@ public class EstadisticasController extends JPanel {
     public JButton btnActividades;
     public JButton btnPdf;
     private ServiceModel service;
+    private byte[] pngRecursos;
+    private byte[] pngActividades;
 
     public EstadisticasController() {
         $$$setupUI$$$();
@@ -118,6 +123,24 @@ public class EstadisticasController extends JPanel {
         panel.add(new ChartPanel(chart), BorderLayout.CENTER);
         panel.revalidate();
         panel.repaint();
+
+        byte[] png = chartAPng(chart);
+        if ("Recursos".equals(titulo)) {
+            pngRecursos = png;
+        } else {
+            pngActividades = png;
+        }
+    }
+
+    private byte[] chartAPng(JFreeChart chart) {
+        try {
+            BufferedImage img = chart.createBufferedImage(500, 320);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "png", baos);
+            return baos.toByteArray();
+        } catch (Exception e) {
+            return null; // si falla la captura, el PDF sigue generándose sin ese gráfico
+        }
     }
 
     private void createUIComponents() {
