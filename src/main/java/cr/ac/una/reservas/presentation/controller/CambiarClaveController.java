@@ -6,9 +6,7 @@ import cr.ac.una.reservas.logic.ServiceModel;
 import cr.ac.una.reservas.presentation.view.VistaUtil;
 
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Insets;
+import java.awt.*;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -122,11 +120,15 @@ public class CambiarClaveController extends JDialog {
         final JScrollPane scrollPane1 = new JScrollPane();
         panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         guardarButton = new JButton();
+        guardarButton.setBackground(new Color(-13969139));
+        guardarButton.setForeground(new Color(-16777216));
         guardarButton.setText("Guardar");
         scrollPane1.setViewportView(guardarButton);
         final JScrollPane scrollPane2 = new JScrollPane();
         panel1.add(scrollPane2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         cancelarButton = new JButton();
+        cancelarButton.setBackground(new Color(-1110993));
+        cancelarButton.setForeground(new Color(-16777216));
         cancelarButton.setText("Cancelar");
         scrollPane2.setViewportView(cancelarButton);
     }

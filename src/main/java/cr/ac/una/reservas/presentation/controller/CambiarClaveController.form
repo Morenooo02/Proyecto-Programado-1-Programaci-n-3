@@ -70,6 +70,8 @@
               <component id="1ef99" class="javax.swing.JButton" binding="guardarButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <background color="-13969139"/>
+                  <foreground color="-16777216"/>
                   <text value="Guardar"/>
                 </properties>
               </component>
@@ -85,6 +87,8 @@
               <component id="f31d6" class="javax.swing.JButton" binding="cancelarButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <background color="-1110993"/>
+                  <foreground color="-16777216"/>
                   <text value="Cancelar"/>
                 </properties>
               </component>

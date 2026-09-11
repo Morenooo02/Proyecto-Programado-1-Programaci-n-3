@@ -612,5 +612,30 @@
                 <descripcion>Proyector</descripcion>
             </categoriasSolicitadas>
         </reserva>
+        <reserva>
+            <id>RES-21-1789108454598</id>
+            <actividad>fara</actividad>
+            <fecha>2026-09-25</fecha>
+            <horaInicio>14:30</horaInicio>
+            <horaFin>15:00</horaFin>
+            <estado>ACTIVA</estado>
+            <funcionario>
+                <id>100</id>
+                <nombre>Ana Perez</nombre>
+                <telefono>8888-1111</telefono>
+            </funcionario>
+            <recursosAsignados>
+                <id>LT-238715</id>
+                <descripcion>Laptop #238715</descripcion>
+                <categoria>
+                    <id>2</id>
+                    <descripcion>Laptop windows 11</descripcion>
+                </categoria>
+            </recursosAsignados>
+            <categoriasSolicitadas>
+                <id>2</id>
+                <descripcion>Laptop windows 11</descripcion>
+            </categoriasSolicitadas>
+        </reserva>
     </reservas>
 </datos>
