@@ -133,46 +133,71 @@ public class ReservaController extends JPanel {
     }
 
     private void procesarFraseIA() {
-        try {
-            String frase = txtFrase.getText().trim();
+        String frase = txtFrase.getText().trim();
 
-            if (frase.isBlank()) {
-                VistaUtil.error(this, "Ingrese una frase para utilizar la IA.");
-                return;
-            }
-
-            ReservaExtraccion extraccion = service.extraerReserva(frase);
-
-            if (extraccion == null) {
-                VistaUtil.error(this, "No se pudieron extraer los datos de la reserva.");
-                return;
-            }
-
-            if (extraccion.getActividad() != null) {
-                txtActividad.setText(extraccion.getActividad());
-            }
-
-            if (extraccion.getFecha() != null) {
-                txtFecha.setText(extraccion.getFecha());
-            }
-
-            seleccionarHora(cbHoraInicio, extraccion.getHoraInicio());
-            seleccionarHora(cbHoraFin, extraccion.getHoraFinal());
-
-            List<String> categoriasExtraidas = extraccion.getCategoriasRecurso();
-            for (JCheckBox cb : checksCategorias) {
-                String descripcion = cb.getText();
-                boolean seleccionada = categoriasExtraidas != null
-                        && categoriasExtraidas.stream().anyMatch(c -> c.equalsIgnoreCase(descripcion));
-                cb.setSelected(seleccionada);
-            }
-
-            VistaUtil.mensaje(this, "Datos extraídos correctamente.");
-        } catch (Exception ex) {
-            VistaUtil.error(this, "Error al utilizar la IA: " + ex.getMessage());
+        if (frase.isBlank()) {
+            VistaUtil.error(this, "Ingrese una frase para utilizar la IA.");
+            return;
         }
+
+        btnUsarIA.setEnabled(false);
+        String textoOriginalBoton = btnUsarIA.getText();
+        btnUsarIA.setText("Procesando...");
+        setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
+
+        SwingWorker<ReservaExtraccion, Void> worker = new SwingWorker<>() {
+            @Override
+            protected ReservaExtraccion doInBackground() {
+                return service.extraerReserva(frase);
+            }
+
+            @Override
+            protected void done() {
+                btnUsarIA.setEnabled(true);
+                btnUsarIA.setText(textoOriginalBoton);
+                setCursor(java.awt.Cursor.getDefaultCursor());
+                try {
+                    aplicarExtraccion(get());
+                } catch (Exception ex) {
+                    Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
+                    VistaUtil.error(ReservaController.this,
+                            "No se pudo obtener respuesta del servicio de IA "
+                                    + "(puede estar caído o sin conexión en este momento).\n"
+                                    + "Puede completar los campos de la reserva manualmente.\n"
+                                    + "Detalle: " + causa.getMessage());
+                }
+            }
+        };
+        worker.execute();
     }
 
+    private void aplicarExtraccion(ReservaExtraccion extraccion) {
+        if (extraccion == null) {
+            VistaUtil.error(this, "No se pudieron extraer los datos de la reserva. Complete los campos manualmente.");
+            return;
+        }
+
+        if (extraccion.getActividad() != null) {
+            txtActividad.setText(extraccion.getActividad());
+        }
+
+        if (extraccion.getFecha() != null) {
+            txtFecha.setText(extraccion.getFecha());
+        }
+
+        seleccionarHora(cbHoraInicio, extraccion.getHoraInicio());
+        seleccionarHora(cbHoraFin, extraccion.getHoraFinal());
+
+        List<String> categoriasExtraidas = extraccion.getCategoriasRecurso();
+        for (JCheckBox cb : checksCategorias) {
+            String descripcion = cb.getText();
+            boolean seleccionada = categoriasExtraidas != null
+                    && categoriasExtraidas.stream().anyMatch(c -> c.equalsIgnoreCase(descripcion));
+            cb.setSelected(seleccionada);
+        }
+
+        VistaUtil.mensaje(this, "Datos extraídos correctamente.");
+    }
     private void seleccionarHora(JComboBox<String> combo, String hora) {
         if (hora == null || hora.isBlank()) {
             combo.setSelectedIndex(0);
